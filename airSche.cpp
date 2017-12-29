@@ -2,14 +2,20 @@
 #include <vector>
 using namespace std;
 
-struct InfoArista{
+#define INF 1<<30
+#define S 0
+#define T 1
+#define s 2
+#define t 3
+
+struct Arista{
     int capacity;
-    int lowerBound;
     int flow;
     
-    InfoArista(int capacity, int lowerBound){
+    Arista(){}
+    
+    Arista(int capacity){
         this->capacity = capacity;
-        this->lowerBound = lowerBound;
         this->flow = 0;
     }
 };
@@ -17,10 +23,10 @@ struct InfoArista{
 struct Nodo {
     int airport;
     int time;
-    int demanda;
+    //int demanda;
     bool origen;
     
-    vector< pair <int, InfoArista> > conexiones;
+    vector< pair <int, Arista> > conexiones;
     
     Nodo(){}
     
@@ -28,46 +34,59 @@ struct Nodo {
         this->airport = airport;
         this->time = time;
         this->origen = origen;
+        //this->demanda = demanda;
     }
 };
 
 
 
+bool edmonds_karp(vector< Nodo >& G){
+    return true;
+}
+
+void resetFlow(vector< Nodo >& G){
+    
+}
+
+
+bool reachable_v1(const Nodo& i, const Nodo& j){
+    return j.origen and i.airport == j.airport and j.time-i.time >= 15;
+} 
+
 int main(){
     int o, d, h1, h2;
-    vector< Nodo > G;
     
     
+    vector< Nodo > G(4);
     
-    InfoArista vuelo(1,1);
-    InfoArista aux(1,0);
-
+    Arista cap1(1);
+    G[S].conexiones.push_back(make_pair(s, cap1));
+    G[t].conexiones.push_back(make_pair(T, cap1));
     
-    Nodo s;
-    G.push_back(s);    
-    Nodo t;
-    G.push_back(t);  
+    /*
+     * G[0] = Nodo S
+     * G[1] = Nodo T
+     * G[2] = Nodo s
+     * G[3] = Nodo t
+     */
     
-    Nodo S;
-    G.push_back(S);
-    
-    Nodo T;
-    G.push_back(T);
-    
-    
-    G[2].conexiones.push_back(make_pair(0, aux));
-    G[1].conexiones.push_back(make_pair(3, aux));
     
     int numNodo = 4;
+    
     while(cin >> o >> d >> h1 >> h2){
-       Nodo origen(o, h1, true);
-       G[0].conexiones.push_back(make_pair(numNodo, aux));
-       G[2].conexiones.push_back(make_pair(numNodo, aux));
-       origen.conexiones.push_back(make_pair(numNodo+1, vuelo));
+        
+       Nodo origen(o, h1, true); //creo origen
+       origen.conexiones.push_back(make_pair(T, cap1));
        G.push_back(origen);
+       
+       G[s].conexiones.push_back(make_pair(numNodo, cap1)); //enlace s a origen
+       
        Nodo destino(d, h2, false);
-       destino.conexiones.push_back(make_pair(1, aux));
+       destino.conexiones.push_back(make_pair(t, cap1));
        G.push_back(destino);
+       
+       G[S].conexiones.push_back(make_pair(numNodo+1, cap1));
+       
        numNodo += 2;
     }
     
@@ -80,19 +99,31 @@ int main(){
 //         cout << endl;
 //     }
     
-    for(int i = 0; i < G.size(); ++i){
+    for(int i = 4; i < G.size(); ++i){
         if(!G[i].origen){
-            for(int j = 0; j < G.size(); ++j){
-                if(G[j].origen and G[i].airport == G[j].airport and G[j].time-G[i].time >= 15){
-                    
-                    G[i].conexiones.push_back(make_pair(j, aux));
+            for(int j = 4; j < G.size(); ++j){
+                if(reachable_v1(G[i], G[j])){
+                    G[i].conexiones.push_back(make_pair(j, cap1));
                 }
             }
         }
     }
     
-
+    bool factible = false;
+    int k = 1;
     
+    while(not factible){
+        G[S].conexiones[0].second.capacity = k;
+        G[t].conexiones[0].second.capacity = k;
+        
+        factible = edmonds_karp(G);
+        
+        if(not factible){
+            resetFlow(G);
+        }
+        ++k;
+    }
     
+    //Aqui tenemos el G correcto
     
 }
