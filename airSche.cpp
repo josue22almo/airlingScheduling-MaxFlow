@@ -64,12 +64,14 @@ vector<int> BFS(const vector<Nodo>& R){
             return res;
         }
         for(int i = 0; i < R[actual].conexiones.size(); ++i){
-            int next = R[actual].conexiones[i].first;
-            int d = dist[actual] + 1;
-            if(d < dist[next]){
-                dist[next] = d;
-                path[next] = actual;
-                q.push(next);
+            if(R[actual].conexiones[i].second.capacity - R[actual].conexiones[i].second.flow > 0){
+                int next = R[actual].conexiones[i].first;
+                int d = dist[actual] + 1;
+                if(d < dist[next]){
+                    dist[next] = d;
+                    path[next] = actual;
+                    q.push(next);
+                }
             }
         }
     }
@@ -81,6 +83,8 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
     int f = 0;
     vector<Nodo> R = G;
     vector<int> P = BFS(R);
+    
+    //P tiene camino mas corto entre T y S (invertido);
     
     while(P.size() > 0){
         
@@ -97,18 +101,37 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
         }
         ++n;
         //Actualizar residual
+        
+        for(int i = P.size()-1; i > 0; --i){
+            for(int j = 0; j < G[P[i]].conexiones.size(); ++j){
+                if(G[P[i]].conexiones[j].first == P[i-1]){
+                    int diff = G[P[i]].conexiones[j].second.capacity - G[P[i]].conexiones[j].second.flow;
+                    
+                    bool found = false;
+                    for(int w = 0; w < R[P[i-1]].conexiones.size(); ++w){
+                        if(R[P[i-1]].conexiones[w].first == P[i]){
+                            found = true;
+                            ++R[P[i-1]].conexiones[w].second.capacity;
+                        }
+                    }
+                    if(not found){
+                        Arista back(1);
+                        back.backward = true;
+                        R[P[i-1]].conexiones.push_back(make_pair(P[i], back));
+                    }
+
+                }
+            }
+            
+        }
+        P = BFS(R);
     }    
         
     return true;
 }
 
 void resetFlow(vector< Nodo >& G){
-    for (int i = 0; i < G.size(); ++i){
-        for (int j = 0; j < G[i].conexiones.size(); ++j)
-        {
-            G[i].conexiones[j].second.flow = 0;
-        }
-    }
+    
 }
 
 
@@ -181,7 +204,7 @@ int main(){
         
         int n=0;
         factible = edmonds_karp(G, n);
-        
+        cout << "fin edmonds" << endl;
         if(not factible){
             resetFlow(G);        
             ++k;
