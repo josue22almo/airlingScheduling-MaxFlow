@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 #define INF 1<<30
@@ -11,12 +12,14 @@ using namespace std;
 struct Arista{
     int capacity;
     int flow;
+    bool backward;
     
     Arista(){}
     
     Arista(int capacity){
         this->capacity = capacity;
         this->flow = 0;
+        this->backward = false;
     }
 };
 
@@ -38,9 +41,64 @@ struct Nodo {
     }
 };
 
+vector<int> BFS(const vector<Nodo>& R){
+    queue<int> q;
+    q.push(S);
+    
+    vector<int> dist(R.size(), INF);
+    vector<int> path(R.size(), -1);
+    
+    dist[S] = 0;
+    
+    vector<int> res;
+    
+    while(not q.empty()){
+        int actual = q.front();
+        q.pop();        
+        if(actual == T){
+            while(actual != S){
+                res.push_back(actual);
+                actual = path[actual];
+            }
+            res.push_back(S);
+            return res;
+        }
+        for(int i = 0; i < R[actual].conexiones.size(); ++i){
+            int next = R[actual].conexiones[i].first;
+            int d = dist[actual] + 1;
+            if(d < dist[next]){
+                dist[next] = d;
+                path[next] = actual;
+                q.push(next);
+            }
+        }
+    }
+    return res;
+}
 
-
-bool edmonds_karp(vector< Nodo >& G){
+bool edmonds_karp(vector<Nodo>& G, int& n){
+    
+    int f = 0;
+    vector<Nodo> R = G;
+    vector<int> P = BFS(R);
+    
+    while(P.size() > 0){
+        
+        //Agument
+        for(int i = P.size()-1; i > 0; --i){
+            for(int j = 0; j < R[P[i]].conexiones.size(); ++j){
+                if(R[P[i]].conexiones[j].first == P[i-1]){
+                    if(not R[P[i]].conexiones[j].second.backward){
+                        ++G[P[i]].conexiones[j].second.flow;
+                    }
+                    else --G[P[i]].conexiones[j].second.flow;
+                }
+            }
+        }
+        ++n;
+        //Actualizar residual
+    }    
+        
     return true;
 }
 
@@ -57,7 +115,7 @@ int main(){
     int o, d, h1, h2;
     
     
-    vector< Nodo > G(4);
+    vector<Nodo> G(4);
     
     Arista cap1(1);
     G[S].conexiones.push_back(make_pair(s, cap1));
@@ -116,14 +174,15 @@ int main(){
         G[S].conexiones[0].second.capacity = k;
         G[t].conexiones[0].second.capacity = k;
         
-        factible = edmonds_karp(G);
+        int n=0;
+        factible = edmonds_karp(G, n);
         
         if(not factible){
-            resetFlow(G);
+            resetFlow(G);        
+            ++k;
         }
-        ++k;
     }
     
     //Aqui tenemos el G correcto
-    
+    cout << "Hola" << endl;
 }
