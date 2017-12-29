@@ -103,7 +103,12 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
 }
 
 void resetFlow(vector< Nodo >& G){
-    
+    for (int i = 0; i < G.size(); ++i){
+        for (int j = 0; j < G[i].conexiones.size(); ++j)
+        {
+            G[i].conexiones[j].second.flow = 0;
+        }
+    }
 }
 
 
