@@ -41,6 +41,15 @@ struct Nodo {
     }
 };
 
+void print_flows(vector< Nodo >& G){
+    for (int i = 0; i < G.size(); ++i){
+        for (int j = 0; j < G[i].conexiones.size(); ++j)
+        {
+            cout << "(" << i << "-" << G[i].conexiones[j].first << ") -> " << G[i].conexiones[j].second.flow <<  endl;
+        }
+    }
+}
+
 vector<int> BFS(const vector<Nodo>& R){
     queue<int> q;
     q.push(S);
@@ -61,6 +70,7 @@ vector<int> BFS(const vector<Nodo>& R){
                 actual = path[actual];
             }
             res.push_back(S);
+            cout << "acabé el BFS" << endl;
             return res;
         }
         for(int i = 0; i < R[actual].conexiones.size(); ++i){
@@ -73,15 +83,26 @@ vector<int> BFS(const vector<Nodo>& R){
             }
         }
     }
+    cout << "acabé el BFS" << endl;
     return res;
+}
+
+void print_path(const vector<int> v){
+    for (int i = v.size() - 1; i >= 0 ; --i)
+    {
+        cout << v[i] << " - ";
+    }
+    cout << endl;
 }
 
 bool edmonds_karp(vector<Nodo>& G, int& n){
     
+    cout << "edmonds_karp" << endl;
     int f = 0;
     vector<Nodo> R = G;
+    cout << "hago el BFS" << endl;
     vector<int> P = BFS(R);
-    
+    print_path(P);
     while(P.size() > 0){
         
         //Agument
@@ -96,6 +117,13 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
             }
         }
         ++n;
+        print_flows(G);
+        cout << "=============================" << endl;
+        P = BFS(R);
+        print_path(P);
+        cout << "=============================" << endl;
+        cout << "=============================" << endl;
+        cout << "=============================" << endl;
         //Actualizar residual
     }    
         
@@ -115,6 +143,16 @@ void resetFlow(vector< Nodo >& G){
 bool reachable_v1(const Nodo& i, const Nodo& j){
     return j.origen and i.airport == j.airport and j.time-i.time >= 15;
 } 
+
+void imprimir_grafo(const vector<Nodo> &G){
+    for(int i = 0; i < G.size(); ++i){
+        cout << i << " -> ";
+        for(int j = 0; j < G[i].conexiones.size(); ++j){
+            cout << G[i].conexiones[j].first << " - "; 
+        }
+        cout << endl;
+    }
+}
 
 int main(){
     int o, d, h1, h2;
@@ -153,15 +191,6 @@ int main(){
        numNodo += 2;
     }
     
-//     cout << G[326].conexiones[0].first << endl << endl;
-//     
-//         for(int i = 0; i < G.size(); ++i){
-//         for(int j = 0; j < G[i].conexiones.size(); ++j){
-//             cout << G[i].conexiones[j].first << " "; 
-//         }
-//         cout << endl;
-//     }
-    
     for(int i = 4; i < G.size(); ++i){
         if(!G[i].origen){
             for(int j = 4; j < G.size(); ++j){
@@ -171,7 +200,8 @@ int main(){
             }
         }
     }
-    
+    // cout << "tengo mi grafo de reachables" << endl;
+    // imprimir_grafo(G);
     bool factible = false;
     int k = 1;
     
@@ -187,7 +217,4 @@ int main(){
             ++k;
         }
     }
-    
-    //Aqui tenemos el G correcto
-    cout << "Hola" << endl;
 }
