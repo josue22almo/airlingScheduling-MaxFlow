@@ -83,7 +83,7 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
     int f = 0;
     vector<Nodo> R = G;
     vector<int> P = BFS(R);
-    
+    cout<< "Fin BFS" << endl;
     //P tiene camino mas corto entre T y S (invertido);
     
     while(P.size() > 0){
@@ -107,24 +107,30 @@ bool edmonds_karp(vector<Nodo>& G, int& n){
                 if(G[P[i]].conexiones[j].first == P[i-1]){
                     int diff = G[P[i]].conexiones[j].second.capacity - G[P[i]].conexiones[j].second.flow;
                     
-                    bool found = false;
-                    for(int w = 0; w < R[P[i-1]].conexiones.size(); ++w){
-                        if(R[P[i-1]].conexiones[w].first == P[i]){
-                            found = true;
-                            ++R[P[i-1]].conexiones[w].second.capacity;
+                    if(G[P[i]].conexiones[j].second.flow > 0){
+                        bool found = false;
+                        for(int w = 0; w < R[P[i-1]].conexiones.size(); ++w){
+                            if(R[P[i-1]].conexiones[w].first == P[i]){
+                                found = true;
+                                R[P[i-1]].conexiones[w].second.capacity = G[P[i]].conexiones[j].second.flow;
+                            }
+                        }
+                        if(not found){
+                            Arista back(G[P[i]].conexiones[j].second.flow);
+                            back.backward = true;
+                            R[P[i-1]].conexiones.push_back(make_pair(P[i], back));
                         }
                     }
-                    if(not found){
-                        Arista back(1);
-                        back.backward = true;
-                        R[P[i-1]].conexiones.push_back(make_pair(P[i], back));
-                    }
+                    
+                    
 
                 }
             }
             
         }
+        
         P = BFS(R);
+        cout << P.size() << endl;
     }    
         
     return true;
