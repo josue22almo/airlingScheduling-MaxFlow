@@ -9,22 +9,22 @@ using namespace std;
 #define s 2
 #define t 3
 
-void imprimir_E(vector<vector<int> > &v, vector<vector<int> > &C){
-    for (int i = 0; i < v.size(); ++i)
-    {
-        for (int j = 0; j < v[i].size(); ++j)
-        {
-            cout << "(" << i << ", " << v[i][j] << ") con C " << C[i][v[i][j]]<< endl;
-        }
-    }
-}
+// void imprimir_E(vector<vector<int> > &v, vector<vector<int> > &C){
+//     for (int i = 0; i < v.size(); ++i)
+//     {
+//         for (int j = 0; j < v[i].size(); ++j)
+//         {
+//             cout << "(" << i << ", " << v[i][j] << ") con C " << C[i][v[i][j]]<< endl;
+//         }
+//     }
+// }
 
-void print_vector(const vector<int>& v){
-    for (int i = 0; i< v.size(); ++i){
-        cout << v[i] << ", ";
-    }
-    cout << endl;
-}
+// void print_vector(const vector<int>& v){
+//     for (int i = 0; i< v.size(); ++i){
+//         cout << v[i] << ", ";
+//     }
+//     cout << endl;
+// }
 
 void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector<int> >&v,
     const vector<vector<int> >&C){
@@ -64,8 +64,7 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
     int n = trips.size();
     E[S].push_back(s);
     E[t].push_back(T);
-    // E[s].push_back(t);
-   
+    
     for (int i = 4; i < n; i+=2){
         C[s][i] = C[i][T] = 1;
         E[s].push_back(i);
@@ -86,6 +85,7 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
             }            
         }
     }
+    E[s].push_back(t);
 }
 
 pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<int> >&E, 
@@ -97,6 +97,16 @@ pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<in
 
     queue<int> Q;
     Q.push(S);
+
+    // cout << "=======================" << endl;
+    // cout << "Imprimiendo flows" << endl;
+
+    // for (int i = 0; i < F.size(); ++i){
+    //     for(int j = 0; j < F.size() ; ++j){
+    //         cout << F[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     while(!Q.empty()){
         int u = Q.front();
@@ -116,28 +126,40 @@ pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<in
     return make_pair(0, P);
 }
 
-pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vector<vector<int> >&E, int k){
+
+pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vector<vector<int> >&E, int k, vector<vector<int> > &paths){
     int f = 0;
     int n = C[0].size();
     vector<vector<int> > F(n, vector<int>(n, 0));
-    // C[S][s] = C[t][T] = C[s][t] = k;
-    C[S][s] = C[t][T] = k;
+    C[S][s] = C[t][T] = C[s][t] = k;
+    // C[S][s] = C[t][T] = k;
 
     while(true){
         pair<int, vector<int> > bfs = BFS(C, E, F);
 
         if (bfs.first == 0)
             break;
-
+        
         f += bfs.first;
         int v = T;
 
+        vector<int> auxP;
+        auxP.push_back(T);
         while(v != S){
             int u = bfs.second[v];
+            auxP.push_back(u);
             F[u][v] += bfs.first;
             F[v][u] -= bfs.first;
             v = u;
         }
+
+        
+        cout << "paths is ";
+        for(int j = auxP.size()-1; j >= 0 ; --j){
+            cout << auxP[j] << " ";
+        }
+        cout << endl << "=======================" << endl;
+        paths.push_back(auxP);
     }
     return make_pair(f, F);
 }
@@ -145,11 +167,20 @@ pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vecto
 int compute_min_pilots(vector<vector<int> >&C, const vector<vector<int> >&E, int num_trips){
     bool troved = false;
     int k = 0;
+    vector<vector<int> > paths;
     while(!troved){
         ++k;
-        pair<int, vector<vector<int> >> edmonds = edmonds_karp(C, E, k);
+        vector<vector<int> > aux_paths;
+        pair<int, vector<vector<int> >> edmonds = edmonds_karp(C, E, k, aux_paths);
         print_edmonds(edmonds, E, C);
+        paths = aux_paths;
         troved = (edmonds.first == num_trips + k);
+    }
+    for (int i = 0; i < paths.size(); ++i){
+        for(int j = paths[i].size()-1; j >= 0 ; --j){
+            cout << paths[i][j] << " ";
+        }
+        cout << endl;
     }
     return k;
 }
