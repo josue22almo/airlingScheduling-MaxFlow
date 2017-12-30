@@ -39,8 +39,7 @@ void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector
 }
 
 
-struct Trip
-{
+struct Trip{
     int airport;
     int time;
     bool origen;
@@ -55,6 +54,34 @@ struct Trip
 
 bool reachable_v1(const Trip &t1, const Trip &t2){
     return t2.origen and t1.airport == t2.airport and t2.time - t1.time >= 15;
+}
+
+void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<Trip> &trips){
+    int n = trips.size();
+    E[S].push_back(s);
+    E[t].push_back(T);
+    E[s].push_back(t);
+   
+    for (int i = 4; i < n; i+=2){
+        C[s][i] = C[i][T] = 1;
+        E[s].push_back(i);
+        E[i].push_back(T);
+
+        C[i+1][t] = C[S][i+1] = 1;
+        E[i+1].push_back(t);
+        E[S].push_back(i+1);
+    }
+
+    for (int i = 4; i < n; ++i){
+        if(!trips[i].origen){
+            for (int j = 4; j < n; ++j){
+                if (reachable_v1(trips[i], trips[j])){
+                    E[i].push_back(j);
+                    C[i][j] = 1;
+                }
+            }            
+        }
+    }
 }
 
 pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<int> >&E, 
@@ -89,8 +116,7 @@ pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vecto
     int f = 0;
     int n = C[0].size();
     vector<vector<int> > F(n, vector<int>(n, 0));
-    // C[S][s] = C[t][T] = C[s][t] = k;
-    C[S][s] = C[t][T] = k;
+    C[S][s] = C[t][T] = C[s][t] = k;
 
     while(true){
         pair<int, vector<int> > bfs = BFS(C, E, F);
@@ -111,41 +137,16 @@ pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vecto
     return make_pair(f, F);
 }
 
-void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<Trip> &trips){
-    int n = trips.size();
-    E[S].push_back(s);
-    E[t].push_back(T);
-   
-    for (int i = 4; i < n; i+=2){
-        C[s][i] = C[i][T] = 1;
-        E[s].push_back(i);
-        E[i].push_back(T);
-
-        C[i+1][t] = C[S][i+1] = 1;
-        E[i+1].push_back(t);
-        E[S].push_back(i+1);
-    }
-
-    for (int i = 4; i < n; ++i){
-        if(!trips[i].origen){
-            for (int j = 4; j < n; ++j){
-                if (reachable_v1(trips[i], trips[j])){
-                    E[i].push_back(j);
-                    C[i][j] = 1;
-                }
-            }            
-        }
-    }
-}
-
 int compute_min_pilots(vector<vector<int> >&C, const vector<vector<int> >&E, int num_trips){
     bool troved = false;
-    int k = 1;
+    int k = 0;
     while(!troved){
+        ++k;
         pair<int, vector<vector<int> >> edmonds = edmonds_karp(C, E, k);
         // print_edmonds(edmonds, E);
-        troved = (edmonds.first == num_trips + k);
-        ++k;
+        troved = true;
+        // troved = (edmonds.first == num_trips + k);
+        cout << num_trips << " " << k << " " << edmonds.first << endl;
     }
     return k;
 }
