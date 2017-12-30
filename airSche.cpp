@@ -26,16 +26,20 @@ void print_vector(const vector<int>& v){
     cout << endl;
 }
 
-void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector<int> >&v){
+void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector<int> >&v,
+    const vector<vector<int> >&C){
     cout << "Max flow is " << edmonds.first << endl;
 
     for (int i = 0; i < v.size(); ++i)
     {
         for (int j = 0; j < v[i].size(); ++j)
         {
-            cout << "(" << i << ", " << v[i][j] << ") con F " << edmonds.second[i][v[i][j]]<< endl;
+            cout << "(" << i << ", " << v[i][j] << ") con F " << edmonds.second[i][v[i][j]]<< " con C " << C[i][v[i][j]]<< endl;
         }
     }
+    cout << "================================" << endl;
+    cout << "================================" << endl;
+    cout << "================================" << endl;
 }
 
 
@@ -60,7 +64,7 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
     int n = trips.size();
     E[S].push_back(s);
     E[t].push_back(T);
-    E[s].push_back(t);
+    // E[s].push_back(t);
    
     for (int i = 4; i < n; i+=2){
         C[s][i] = C[i][T] = 1;
@@ -116,7 +120,8 @@ pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vecto
     int f = 0;
     int n = C[0].size();
     vector<vector<int> > F(n, vector<int>(n, 0));
-    C[S][s] = C[t][T] = C[s][t] = k;
+    // C[S][s] = C[t][T] = C[s][t] = k;
+    C[S][s] = C[t][T] = k;
 
     while(true){
         pair<int, vector<int> > bfs = BFS(C, E, F);
@@ -143,10 +148,8 @@ int compute_min_pilots(vector<vector<int> >&C, const vector<vector<int> >&E, int
     while(!troved){
         ++k;
         pair<int, vector<vector<int> >> edmonds = edmonds_karp(C, E, k);
-        // print_edmonds(edmonds, E);
-        troved = true;
-        // troved = (edmonds.first == num_trips + k);
-        cout << num_trips << " " << k << " " << edmonds.first << endl;
+        print_edmonds(edmonds, E, C);
+        troved = (edmonds.first == num_trips + k);
     }
     return k;
 }
