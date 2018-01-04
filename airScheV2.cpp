@@ -138,7 +138,7 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
     
     for(int i = 5; i < n; i+=2){
         vector<int> reachables = BFSReach(E, i);
-        cout << i << ": ";
+        //cout << (i-5)/2 << ": ";
         for(int j = 0; j < reachables.size(); ++j){
             bool found = false;
             for(int k = 0; k < E[i].size() and !found; ++k){
@@ -149,12 +149,32 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
              ///// INSERTAR ARISTA DESDE I HASTA reachables[j] /////
              ///////////////////////////////////////////////////////
                 
-
+                vector<int>::iterator it = E[i].begin();
+                    int itrips = 0;
+                    bool inserit = false;
+                    
+                    while (it != E[i].end() and !inserit){
+                       // cout << "hola" << endl;
+                        if(trips[reachables[j]].time <= trips[E[i][itrips]].time){
+                            E[i].insert(it,reachables[j]);
+                            inserit = true;
+                        }
+                        else{
+                            ++itrips;
+                            ++it;
+                        }
+                    }
+                    
+                    if (!inserit) E[i].insert(it,reachables[j]);
+//                  E[i].push_back(j);
+                    C[i][reachables[j]] = 1;
+                        //E[i].push_back(reachables[j]);
+                        //E[i].push_back(reachables[j]);
                 
             }
-            cout << reachables[j] << ", ";
+            //cout << (reachables[j]-4)/2 << ", ";
         }
-        cout << endl;
+        //cout << endl;
     }
     
     for (int i = 4; i < n; i+=2){
@@ -261,6 +281,6 @@ int main(){
 
     load_trips(E, C, trips);
     pair <int, vector<vector<int> > > pilots = compute_min_pilots(C, E, num_trips);
-    cout << "min pilots is " << pilots.first << endl;
-     print_paths(pilots, C, E);
+    cout << pilots.first << endl;
+    print_paths(pilots, C, E);
 }
