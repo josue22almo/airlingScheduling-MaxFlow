@@ -204,5 +204,5 @@ int main(){
     load_trips(E, C, trips);
     pair <int, vector<vector<int> > > pilots = compute_min_pilots(C, E, num_trips);
     cout << "min pilots is " << pilots.first << endl;
-    //  print_paths(pilots, C, E);
+     print_paths(pilots, C, E);
 }
