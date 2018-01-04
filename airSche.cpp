@@ -1,4 +1,4 @@
-#include <iostream>
+       #include <iostream>
 #include <vector>
 #include <queue>
 using namespace std;
@@ -9,24 +9,8 @@ using namespace std;
 #define s 2
 #define t 3
 
-// void imprimir_E(vector<vector<int> > &v, vector<vector<int> > &C){
-//     for (int i = 0; i < v.size(); ++i)
-//     {
-//         for (int j = 0; j < v[i].size(); ++j)
-//         {
-//             cout << "(" << i << ", " << v[i][j] << ") con C " << C[i][v[i][j]]<< endl;
-//         }
-//     }
-// }
 
-// void print_vector(const vector<int>& v){
-//     for (int i = 0; i< v.size(); ++i){
-//         cout << v[i] << ", ";
-//     }
-//     cout << endl;
-// }
-
-void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector<int> >&v,
+void print_edmonds(pair<int,vector<vector<int> > > &edmonds, const vector<vector<int> >&v,
     const vector<vector<int> >&C){
     cout << "Max flow is " << edmonds.first << endl;
 
@@ -42,6 +26,35 @@ void print_edmonds(pair<int, vector<vector<int> >> &edmonds, const vector<vector
     cout << "================================" << endl;
 }
 
+void print_paths(const pair<int,vector<vector<int> > > &pilots,const vector<vector<int> >&E,
+    const vector<vector<int> >&C) {
+    vector<bool> done((E.size()-4)/2,false); //numero de viajes totales
+    //act es el numero de nodo en el que estoy
+    //viajeaux es el indice auxiliar para comprobar los viajes visitados
+    
+    int act = 5; // 4 para saltarme STst y 1 para apuntar destino
+    int viajeaux = 0;
+    
+    for (int i=0; i < pilots.first; ++i){
+    cout << viajeaux+1; //+1 porque los vuelos empiezan por el 1
+    while (pilots.second[act][t] != 1){ 
+        for (int j=0; j < E[act].size(); ++j){
+        if (pilots.second[act][j] == 1) {
+            done[(act-4)/2] = true;
+            cout << ' ' << (j-4)/2+1;
+            act = j+1; //act apunta al nodo destino del reacheble encontrado
+            j = E[act].size();
+        }
+        }
+    }
+    cout << endl;
+    
+    done[(act-4)/2] = true;
+    while (i != pilots.first-1 and done[viajeaux]) ++viajeaux;
+    act = viajeaux*2+5; //act apunta al primer nodo destino no visitado
+    }
+    
+}
 
 struct Trip{
     int airport;
@@ -62,8 +75,34 @@ bool reachable_v1(const Trip &t1, const Trip &t2){
 
 void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<Trip> &trips){
     int n = trips.size();
-    E[S].push_back(s);
     E[t].push_back(T);
+
+    for (int i = 4; i < n; ++i){
+        if(!trips[i].origen){
+            for (int j = 4; j < n; ++j){
+                if (reachable_v1(trips[i], trips[j])){
+            vector<int>::iterator it = E[i].begin();
+            int itrips = 0;
+            bool inserit = false;
+            while (it != E[i].end() and !inserit) {
+              if (trips[j].time <= trips[E[i][itrips]].time) {
+            E[i].insert(it,j);
+            inserit = true;
+              }
+              else {
+            ++itrips;
+            ++it;
+              }
+            }
+            if (!inserit) E[i].insert(it,j);
+//          E[i].push_back(j);
+                    C[i][j] = 1;
+                }
+            }            
+        }
+    }
+    
+    
     
     for (int i = 4; i < n; i+=2){
         C[s][i] = C[i][T] = 1;
@@ -75,17 +114,8 @@ void load_trips(vector<vector<int> > &E, vector<vector<int> > &C, const vector<T
         E[S].push_back(i+1);
     }
 
-    for (int i = 4; i < n; ++i){
-        if(!trips[i].origen){
-            for (int j = 4; j < n; ++j){
-                if (reachable_v1(trips[i], trips[j])){
-                    E[i].push_back(j);
-                    C[i][j] = 1;
-                }
-            }            
-        }
-    }
-    E[s].push_back(t);
+    E[S].push_back(s);
+//     E[s].push_back(t);
 }
 
 pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<int> >&E, 
@@ -97,16 +127,6 @@ pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<in
 
     queue<int> Q;
     Q.push(S);
-
-    // cout << "=======================" << endl;
-    // cout << "Imprimiendo flows" << endl;
-
-    // for (int i = 0; i < F.size(); ++i){
-    //     for(int j = 0; j < F.size() ; ++j){
-    //         cout << F[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
 
     while(!Q.empty()){
         int u = Q.front();
@@ -127,12 +147,11 @@ pair<int, vector<int> > BFS(const vector<vector<int> >&C, const vector<vector<in
 }
 
 
-pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vector<vector<int> >&E, int k, vector<vector<int> > &paths){
+pair<int, vector<vector<int> > > edmonds_karp(vector<vector<int> >&C, const vector<vector<int> >&E, int k){
     int f = 0;
     int n = C[0].size();
     vector<vector<int> > F(n, vector<int>(n, 0));
     C[S][s] = C[t][T] = C[s][t] = k;
-    // C[S][s] = C[t][T] = k;
 
     while(true){
         pair<int, vector<int> > bfs = BFS(C, E, F);
@@ -143,46 +162,28 @@ pair<int, vector<vector<int> >> edmonds_karp(vector<vector<int> >&C, const vecto
         f += bfs.first;
         int v = T;
 
-        vector<int> auxP;
-        auxP.push_back(T);
         while(v != S){
             int u = bfs.second[v];
-            auxP.push_back(u);
             F[u][v] += bfs.first;
             F[v][u] -= bfs.first;
             v = u;
         }
-
-        
-        cout << "paths is ";
-        for(int j = auxP.size()-1; j >= 0 ; --j){
-            cout << auxP[j] << " ";
-        }
-        cout << endl << "=======================" << endl;
-        paths.push_back(auxP);
     }
     return make_pair(f, F);
 }
 
-int compute_min_pilots(vector<vector<int> >&C, const vector<vector<int> >&E, int num_trips){
+pair <int, vector<vector<int> > > compute_min_pilots(vector<vector<int> >&C, const vector<vector<int> >&E, int num_trips){
     bool troved = false;
     int k = 0;
-    vector<vector<int> > paths;
+    pair<int, vector<vector<int> > > edmonds;
     while(!troved){
         ++k;
-        vector<vector<int> > aux_paths;
-        pair<int, vector<vector<int> >> edmonds = edmonds_karp(C, E, k, aux_paths);
-        print_edmonds(edmonds, E, C);
-        paths = aux_paths;
+    edmonds = edmonds_karp(C, E, k);
+//         print_edmonds(edmonds, E, C);
         troved = (edmonds.first == num_trips + k);
     }
-    for (int i = 0; i < paths.size(); ++i){
-        for(int j = paths[i].size()-1; j >= 0 ; --j){
-            cout << paths[i][j] << " ";
-        }
-        cout << endl;
-    }
-    return k;
+    edmonds.first = k;
+    return edmonds;
 }
 
 int main(){
@@ -200,7 +201,8 @@ int main(){
     vector<vector<int> > C(n, vector<int>(n, 0));
     vector<vector<int> > E(n);
 
-    load_trips(E, C, trips);   
-    int pilots = compute_min_pilots(C, E, num_trips);
-    cout << "min pilots is " << pilots << endl;
+    load_trips(E, C, trips);
+    pair <int, vector<vector<int> > > pilots = compute_min_pilots(C, E, num_trips);
+    cout << "min pilots is " << pilots.first << endl;
+    print_paths(pilots, C, E);
 }
