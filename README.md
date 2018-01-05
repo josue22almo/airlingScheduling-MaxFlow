@@ -21,3 +21,7 @@ To compile the source code move to the fonts/ folder and do type make in the ter
 
 Type profe_test_v1 to run the teacher test with v1. 
 Type profe_test_v2 to run the teacher test with v1.
+
+### Running any test
+
+./airScheVx < ../Benchmark/instance_XXX_XX_XX.air
