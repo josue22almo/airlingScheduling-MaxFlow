@@ -1,6 +1,14 @@
 # Airling Scheduling problem [MAX-FLOW]
 
-This project covers the 20% of the evaluation of the subject Algoritmia (FIB - UPC Q1-TARDOR)
+This project covers the 20% of the evaluation of the subject Algoritmia (FIB - UPC Q1-TARDOR).
+
+Project structure:
+
+* Folderds:
+  ** Benchmark: some sample input files. You can use any of them to do some tests.
+  ** fonts: the source code of the project
+* AirShe.pdf: project statement
+* airSche-docu.pdf: our own documentation about the project.
 
 ## Getting Started
 
