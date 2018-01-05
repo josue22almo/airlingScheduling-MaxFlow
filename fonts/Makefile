@@ -1,4 +1,4 @@
-all: v1
+all: v1 v2
 
 test =
 
