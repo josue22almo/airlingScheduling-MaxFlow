@@ -34,9 +34,9 @@ Type make test to run the teacher test with v1.
 
 ## Usage
 Usage: running a scheduling airline problem solver.
-   The correct usage is:
-   ./airSche vx max_flow_algorithm ?all
-   where
+  The correct usage is:
+    ./airSche vx max_flow_algorithm ?all
+    where
        - vx is the reacheable version to run, x must be 1 or 2, depending on the reachable version.
        - max_flow_algorithm must be:
        - edmonds: run using Edmonds Karp, using BFS.
