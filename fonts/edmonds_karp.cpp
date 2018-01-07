@@ -2,15 +2,15 @@
 
 EdmondsKarp::EdmondsKarp(){}
 
-EdmondsKarp::EdmondsKarp(const vector<vector<int> > &C, const vector<vector<int> > &E, int k){
+EdmondsKarp::EdmondsKarp(const vector<vector<int> > &C, const vector<vector<int> > &E){
 	this->C = C;
 	this->E = E;
-	this->k = k;
+	this->k = C.size();
 }
 
-pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int> > &C, const vector<vector<int> > &E, const vector<vector<int>> &F)
+pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int>> &F)
 {
-  int n = C[0].size();
+    int n = C[0].size();
     vector<int> P(n, -1);
     P[S] = -2; // para asegurarnos de que no volvemos a S
     vector<int> M(n, INF);
@@ -26,8 +26,8 @@ pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int> > &C, const ve
                 P[v] = u;
                 M[v] = min(M[u], C[u][v] - F[u][v]);
                 if (v != T) Q.push(v);
-            else
-                return make_pair(M[T], P);
+                else
+                    return make_pair(M[T], P);
             }
         }
         Q.pop();
@@ -37,18 +37,16 @@ pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int> > &C, const ve
 
 pair<int, vector<vector<int> > > EdmondsKarp::max_flow(){
 
-	int f = 0;
     int n = C[0].size();
     vector<vector<int> > F(n, vector<int>(n, 0));
     C[S][s] = C[t][T] = C[s][t] = k;
 
     while(true){
-        pair<int, vector<int> > bfs = BFS(C,E,F);
+        pair<int, vector<int> > bfs = BFS(F);
 
         if (bfs.first == 0)
             break;
         
-        f += bfs.first;
         int v = T;
 
         while(v != S){
