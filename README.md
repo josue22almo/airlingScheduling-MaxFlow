@@ -37,9 +37,9 @@ Usage: running a scheduling airline problem solver.
   The correct usage is:  
     ./airSche vx max_flow_algorithm ?all  
     where  
-       * vx is the reacheable version to run, x must be 1 or 2, depending on the reachable version.  
-       * max_flow_algorithm must be:  
-       * edmonds: run using Edmonds Karp, using BFS.  
-           * ford: run using Ford Fulkerson, using DFS.  
+       * vx is the reacheable version to run, x must be 1 or 2, depending on the reachable version.
+       * max_flow_algorithm must be:
+       * edmonds: run using Edmonds Karp, using BFS.
+           * ford: run using Ford Fulkerson, using DFS.
        * all: is not mandatory, you have to set this param if you want to print all pilots rutes.
 
