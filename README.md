@@ -28,9 +28,9 @@ To compile the source code move to the fonts/ folder and do type make in the ter
 
 Type make test to run the teacher test with v1. 
 
-## Running any test
-
-./airSche vX < ../Benchmark/instance_XXX_XX_XX.air
+## Makefile options
+* type: set the algorithm type of a test. [default = edmodnds]
+* version: set the recheable version of a test. [default = v1]
 
 ## Usage
 Usage: running a scheduling airline problem solver.
