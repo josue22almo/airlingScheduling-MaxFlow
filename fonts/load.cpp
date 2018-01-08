@@ -7,8 +7,7 @@ bool Load::reachable(const Trip &t1, const Trip &t2){
 }
 
 int Load::usage(){
-    cout << "Usage:" << endl;
-    cout << "   Your are trying to run a scheduling airline problem solver." << endl;
+    cout << "Usage: running a scheduling airline problem solver." << endl;
     cout << "   The correct usage is:" << endl;
     cout << "   ./airSche vx max_flow_algorithm ?all" << endl;
     cout << "   where" << endl;
