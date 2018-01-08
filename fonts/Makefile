@@ -9,6 +9,10 @@ compile: *.cpp
 airSche: compile
 	g++ *.o -o airSche -Wall -W -std=c++11
 
+resultados: airSche
+	./generate_results.sh 1
+	./generate_results.sh 2
+
 test: airSche
 	./airSche $(version) $(type)  < ../Benchmark/instance_100_10_10.air
 	./airSche $(version) $(type) < ../Benchmark/instance_100_10_1.air

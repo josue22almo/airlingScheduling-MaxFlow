@@ -5,7 +5,7 @@ using namespace std;
 Results::Results(){};
 
 void Results::print_paths(const pair<int,vector<vector<int> > > &pilots,const vector<vector<int> >&E, const vector<vector<int> >&C, bool all){
-	cout << "min pilots is " << pilots.first << endl;
+	cout << pilots.first << endl;
 
 	if (all){
 	    vector<bool> done((E.size()-4)/2,false); //numero de viajes totales
