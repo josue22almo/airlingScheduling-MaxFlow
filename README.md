@@ -49,3 +49,10 @@ The correct usage is:
      * ford: run using Ford Fulkerson, using DFS.
  * all: is not mandatory, you have to set this param if you want to print all pilots rutes.
 
+## Makefile usage
+
+Main commands:
+
+* **make**: generates the executable, airSche
+* **make resultados**: generates results using the generate_results.sh script
+* **make test**: runs airSche using the instances with problem of type 10.
