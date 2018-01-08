@@ -21,15 +21,25 @@ git clone https://github.com/josue22almo/airlingScheduling-MaxFlow.git
 
 ### Compiling
 
-To compile the source code move to the fonts/ folder and do type make in the terminal. Two executable will be created:
-   * airSche_v1: with the first version of the problem
-   * airSche_v2: with the second version of the problem
+To compile the source code move to the fonts/ folder and do type make in the terminal. One executable will be created:
+   * airSche
 
 ## Running the tests
 
-Type profe_test_v1 to run the teacher test with v1. 
-Type profe_test_v2 to run the teacher test with v1.
+Type make test to run the teacher test with v1. 
 
-## Running any test
+## Makefile options
+* type: set the algorithm type of a test. [default = edmodnds]
+* version: set the recheable version of a test. [default = v1]
 
-./airScheVx < ../Benchmark/instance_XXX_XX_XX.air
+## Usage
+Usage: running a scheduling airline problem solver.  
+The correct usage is:  
+  ./airSche vx max_flow_algorithm ?all  
+  where  
+ * vx is the reacheable version to run, x must be 1 or 2, depending on the reachable version.
+ * max_flow_algorithm must be:
+ * edmonds: run using Edmonds Karp, using BFS.
+     * ford: run using Ford Fulkerson, using DFS.
+ * all: is not mandatory, you have to set this param if you want to print all pilots rutes.
+
