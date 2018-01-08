@@ -4,7 +4,7 @@ This project covers the 20% of the evaluation of the subject Algoritmia (FIB - U
 
 Project structure:
 
-* Folderds:
+* Folders:
    * Benchmark: some sample input files. You can use any of them to do some tests.
    * fonts: the source code of the project
 * AirShe.pdf: project statement
