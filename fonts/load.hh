@@ -40,10 +40,6 @@ public:
 	    vector<vector<int>> nothing;
 	    return make_pair(nothing, nothing);
 	}
-
-	virtual void update(){
-		cout << "main class" << endl;
-	}
 };
 
 #endif	
