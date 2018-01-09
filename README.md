@@ -11,7 +11,9 @@ Project structure:
 * **AirShe.pdf:** project statement
 * **airSche-docu.pdf:** our own documentation about the project.
 * **Makefile:** a Makefile to compile the project and run some test.
-* **generate_results.sh:** a file that runs airShe solver using all the files in the Benchmark folde. To run the script you migth a number [1 or 2] depending on the recheable version you want. It saves the results in the result folder. 
+* **generate_results.sh:** a script that runs airShe solver using all the files in the Benchmark folde. To run the script you migth a number [1 or 2] depending on the recheable version you want. It saves the results in the result folder. 
+* **generate_time_table.sh:** a sccript that computes mean execution time for each instances type. The results are saved into results/times\_table1.txt and results/times\_table2.txt
+
 
 ## Getting Started
 
@@ -24,8 +26,10 @@ git clone https://github.com/josue22almo/airlingScheduling-MaxFlow.git
 
 ## Compiling
 
-To compile the source code move to the fonts/ folder and do type make in the terminal. One executable will be created:
-   * airSche
+To compile the source code move to the fonts/ folder and do type make in the terminal. Two executable will be created:
+
+* **airSche**: main program  
+* **ctimes**: uses to compute instances type mean execution time.
 
 ## Running the tests
 
