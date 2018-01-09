@@ -13,7 +13,7 @@ int Load::usage(){
     cout << "   where" << endl;
     cout << "       - vx is the reacheable version to run, x must be 1 or 2, depending on the reachable version." << endl;
     cout << "       - max_flow_algorithm must be:" << endl;
-    cout << "       - edmonds: run using Edmonds Karp, using BFS." << endl;
+    cout << "           - edmonds: run using Edmonds Karp, using BFS." << endl;
     cout << "           - ford: run using Ford Fulkerson, using DFS." << endl;
     cout << "       - all: is not mandatory, you have to set this param if you want to print all pilots rutes." << endl;
     return 0;
