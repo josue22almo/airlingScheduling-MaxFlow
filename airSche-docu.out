@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.0.1}{El problema}{}% 1
+\BOOKMARK [1][-]{section.0.2}{Algunas consideraciones}{}% 2
+\BOOKMARK [1][-]{section.0.3}{Formalizaci\363n}{}% 3
+\BOOKMARK [1][-]{section.0.4}{Red de flujo entrada a MaxFlow}{}% 4
+\BOOKMARK [1][-]{section.0.5}{Circulaci\363n bajo demanda y capacidades m\355nima}{}% 5
+\BOOKMARK [1][-]{section.0.6}{Interpretaci\363n}{}% 6
+\BOOKMARK [1][-]{section.0.7}{Implementaci\363n}{}% 7
+\BOOKMARK [2][-]{subsection.0.7.1}{Estructura del proyecto}{section.0.7}% 8
+\BOOKMARK [2][-]{subsection.0.7.2}{ Diagrama estructural del proyecto}{section.0.7}% 9
+\BOOKMARK [2][-]{subsection.0.7.3}{L\355nea de ejecuci\363n del programa}{section.0.7}% 10

@@ -1,0 +1,18 @@
+\select@language {english}
+\contentsline {section}{\numberline {0.1}El problema}{2}{section.0.1}
+\contentsline {section}{\numberline {0.2}Algunas consideraciones}{2}{section.0.2}
+\contentsline {section}{\numberline {0.3}Formalizaci\IeC {\'o}n}{3}{section.0.3}
+\contentsline {section}{\numberline {0.4}Red de flujo entrada a MaxFlow}{3}{section.0.4}
+\contentsline {section}{\numberline {0.5}Circulaci\IeC {\'o}n bajo demanda y capacidades m\IeC {\'\i }nima}{4}{section.0.5}
+\contentsline {section}{\numberline {0.6}Interpretaci\IeC {\'o}n}{6}{section.0.6}
+\contentsline {section}{\numberline {0.7}Implementaci\IeC {\'o}n}{6}{section.0.7}
+\contentsline {subsection}{\numberline {0.7.1}Estructura del proyecto}{6}{subsection.0.7.1}
+\contentsline {subsubsection}{M\IeC {\'o}dulo airShe.cpp}{6}{section*.6}
+\contentsline {subsubsection}{ M\IeC {\'o}dulo load [load.hh - load.cpp]}{7}{section*.7}
+\contentsline {subsubsection}{ M\IeC {\'o}dulo Loadv1 [load\_v1.hh - load\_v1.cpp]}{7}{section*.8}
+\contentsline {subsubsection}{ M\IeC {\'o}dulo Loadv2 [load\_v2.hh - load\_v2.cpp]}{8}{section*.9}
+\contentsline {subsubsection}{M\IeC {\'o}dulo Results [results.hh - results.cpp]}{8}{section*.10}
+\contentsline {subsubsection}{M\IeC {\'o}dulo FordFulkerson [ford\_fulkerson.hh - ford\_fulkerson.cpp]}{9}{section*.11}
+\contentsline {subsubsection}{ M\IeC {\'o}dulo Edmondskarp [edmonds\_karp.hh - edmonds\_karp.cpp]}{10}{section*.12}
+\contentsline {subsection}{\numberline {0.7.2} Diagrama estructural del proyecto}{12}{subsection.0.7.2}
+\contentsline {subsection}{\numberline {0.7.3}L\IeC {\'\i }nea de ejecuci\IeC {\'o}n del programa}{13}{subsection.0.7.3}
