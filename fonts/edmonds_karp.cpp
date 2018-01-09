@@ -8,7 +8,7 @@ EdmondsKarp::EdmondsKarp(const vector<vector<int> > &C, const vector<vector<int>
 	this->k = C.size();
 }
 
-pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int>> &F)
+pair<int, vector<int> > EdmondsKarp::BFS(const vector<vector<int> > &F)
 {
     int n = C[0].size();
     vector<int> P(n, -1);

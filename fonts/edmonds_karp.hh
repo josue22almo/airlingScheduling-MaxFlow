@@ -19,7 +19,7 @@ private:
 	vector<vector<int> >C;
 	vector<vector<int> >E;
 	int k;
-	pair<int, vector<int> > BFS(const vector<vector<int>> &F);
+	pair<int, vector<int> > BFS(const vector<vector<int> > &F);
 	
 public:
 	EdmondsKarp();

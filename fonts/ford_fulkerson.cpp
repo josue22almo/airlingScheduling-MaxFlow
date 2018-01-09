@@ -29,7 +29,7 @@ bool FordFulkerson::is_path(int _s, int _t)
 
 pair<int, vector<vector<int> > > FordFulkerson::max_flow(){
     int f = 0;
-    F = vector<vector<int>> (n, vector<int>(n, 0));
+    F = vector<vector<int> > (n, vector<int>(n, 0));
     C[S][s] = C[t][T] = C[s][t] = k;
     visited = vector<bool> (n, false);
 

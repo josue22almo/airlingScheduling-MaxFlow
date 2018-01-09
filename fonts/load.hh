@@ -35,9 +35,9 @@ public:
 	Load();
 	int usage();
 
-	virtual pair< vector<vector<int>>,vector<vector<int>> > load(){
+	virtual pair< vector<vector<int> >,vector<vector<int> > > load(){
 	    cout << "load base" << endl;
-	    vector<vector<int>> nothing;
+	    vector<vector<int> > nothing;
 	    return make_pair(nothing, nothing);
 	}
 };

@@ -16,7 +16,7 @@ private:
 public:
 	LoadV2();
 
-	virtual pair< vector<vector<int>>,vector<vector<int>> > load(){
+	virtual pair< vector<vector<int> >,vector<vector<int> > > load(){
 		vector<Trip> trips(4);
 
 	    int o, d, h1, h2;

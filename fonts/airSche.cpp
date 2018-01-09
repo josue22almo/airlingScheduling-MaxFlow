@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
 	    }
 
 
-	    pair< vector<vector<int>>,vector<vector<int>> > load_result =  (*load).load();
+	    pair< vector<vector<int> >,vector<vector<int> > > load_result =  (*load).load();
     	pair <int, vector<vector<int> > > pilots;
     	if (argv[2] == string("edmonds")){
     		EdmondsKarp ed(load_result.first, load_result.second);
