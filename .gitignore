@@ -10,4 +10,7 @@ airSche-docu.tex
 airSche-docu.tex~
 *.png
 *.o
+airSche-docu.fls
+airSche-docu.out
+test.txt
 
